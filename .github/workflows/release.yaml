@@ -36,7 +36,7 @@ jobs:
       - name: Build the collection
         run: ansible-galaxy collection build
       - name: Publish collection to Ansible Galaxy
-        run: ansible-galaxy collection publish --token ${{ secrets.GALAXY_TOKEN }} ${{ env.NAMESPACE }}-${{ env.COLLECTION }}-${{ github.event.inputs.version }}.tar.gz
+        run: ansible-galaxy collection publish --token ${{ secrets.GALAXY_TOKEN }} ${{ env.NAMESPACE }}-${{ env.COLLECTION }}-${{ env.GIT_TAG }}.tar.gz
 
       - uses: marvinpinto/action-automatic-releases@latest  # https://github.com/marketplace/actions/automatic-releases
         with:
