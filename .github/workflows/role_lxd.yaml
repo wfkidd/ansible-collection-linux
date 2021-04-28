@@ -3,6 +3,8 @@ name: lxd
 
 on:
   push:
+    tags-ignore:
+      - '*'
     paths:
       - 'roles/lxd/**'
       - 'molecule/lxd/**'

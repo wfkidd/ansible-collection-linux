@@ -3,6 +3,8 @@ name: users
 
 on:
   push:
+    tags-ignore:
+      - '*'
     paths:
       - 'roles/users/**'
       - 'molecule/users/**'

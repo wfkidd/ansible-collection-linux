@@ -3,6 +3,8 @@ name: traefik
 
 on:
   push:
+    tags-ignore:
+      - '*'
     paths:
       - 'roles/traefik/**'
       - 'molecule/traefik/**'

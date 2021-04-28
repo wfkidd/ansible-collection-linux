@@ -3,6 +3,8 @@ name: docker
 
 on:
   push:
+    tags-ignore:
+      - '*'
     paths:
       - 'roles/docker/**'
       - 'molecule/docker/**'
