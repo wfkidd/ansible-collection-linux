@@ -2,9 +2,10 @@
 name: traefik
 
 on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 4 * * *'
   push:
-    tags-ignore:
-      - '*'
     paths:
       - 'roles/traefik/**'
       - 'molecule/traefik/**'
@@ -21,8 +22,8 @@ env:
 
 jobs:
   molecule:
-    # skip job on pull requests from base repository
-    if: github.event.pull_request.head.repo.full_name != github.repository
+    # skip job on pull requests from base repository and tag push
+    if: (github.event.pull_request.head.repo.full_name != github.repository) || !startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     defaults:
       run:
