@@ -4,7 +4,13 @@ name: default
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 4 * * *'
+    - cron: '0 3 * * *'
+  push:
+    paths-ignore:
+      - 'roles/**'
+      - 'molecule/**'
+      - '.github/**'
+      - '!.github/workflows/default.yaml'
 
 env:
   NAMESPACE: bonddim
@@ -25,39 +31,3 @@ jobs:
           python-version: '3.x'
       - run: pip install ansible-base
       - run: ansible-test sanity --docker -v --color
-
-
-  roles:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
-    strategy:
-      fail-fast: false
-      matrix:
-        ansible:
-          - stable-2.9
-          - stable-2.10
-          - devel
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          path: ansible_collections/${{ env.NAMESPACE }}/${{ env.COLLECTION }}
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
-      - uses: bonddim/action-lxd-init@stable
-      - name: Install test dependencies
-        run: python3 -m pip install -r requirements.txt https://github.com/ansible/ansible/archive/${{ matrix.ansible }}.tar.gz
-      - name: Build and install the collection
-        run: |
-          ansible-galaxy collection build
-          ansible-galaxy collection install ${{ env.NAMESPACE }}-${{ env.COLLECTION }}-*.tar.gz
-      - name: Test all roles with molecule
-        run: |
-          for role in $(ls roles); do
-            molecule test -s $role
-          done
-        env:
-          ANSIBLE_FORCE_COLOR: true
-          PY_COLORS: '1'
