@@ -26,4 +26,4 @@ adguardhome_docker_ports:
   - 3000:3000/tcp
 
 # Snap related vars
-adguardhome_snap_channel: latest/stable
+adguardhome_snap_channel: ''

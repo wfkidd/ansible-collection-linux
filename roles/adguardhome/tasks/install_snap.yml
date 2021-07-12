@@ -2,5 +2,5 @@
 - name: Install AdGuard Home from snap
   community.general.snap:
     name: adguard-home
-    channel: '{{ adguardhome_snap_channel }}'
+    channel: '{{ adguardhome_snap_channel | default(omit, true) }}'
     state: present
