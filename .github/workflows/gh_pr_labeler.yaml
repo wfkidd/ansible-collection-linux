@@ -1,5 +1,5 @@
 ---
-name: labeler
+name: '!gh-pr-labeler'
 
 on:
   - pull_request_target
@@ -8,6 +8,7 @@ jobs:
   labeling:
     runs-on: ubuntu-latest
     steps:
+      # https://github.com/marketplace/actions/labeler
       - uses: actions/labeler@v3
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
