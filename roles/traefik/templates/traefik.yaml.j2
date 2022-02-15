@@ -1,16 +1,18 @@
 ---
 ### {{ ansible_managed }}
 entryPoints:
+  {% if not (traefik_disable_http and traefik_enable_https) %}
   web:
     address: :80
-  {% if traefik_enable_https %}
-    {% if traefik_enable_https_redirect %}
+    {% if traefik_enable_https and traefik_enable_https_redirect %}
     http:
       redirections:
         entryPoint:
           to: websecure
           scheme: https
     {% endif %}
+  {% endif %}
+  {% if traefik_enable_https %}
   websecure:
     address: :443
     http:
@@ -83,3 +85,18 @@ log:
 pilot:
   token: {{ traefik_pilot_token }}
   dashboard: true
+
+# Metrics configuration
+{% if traefik_metrics or traefik_metrics_prometheus %}
+metrics:
+  {% if traefik_metrics %}
+  {{ traefik_metrics | to_yaml }}
+  {% endif %}
+  {% if traefik_metrics_prometheus %}
+  prometheus:
+    addEntryPointsLabels: true
+    addRoutersLabels: true
+    addServicesLabels: true
+    manualRouting: true
+  {% endif %}
+{% endif %}
