@@ -15,12 +15,14 @@ Variables with default values from [defaults/main.yml](https://github.com/bonddi
 ```yaml
 # Common vars
 traefik_version: latest  # version to install, ex. v2.3.4
-traefik_install_method: binary   # possible values: binary, docker
+traefik_install_method: binary  # possible values: binary, docker
+traefik_uninstall_purge: false  # removes traefik home directory during uninstall
+
 traefik_host_domainname: ""  # your domain name
 traefik_env: {}  # dict with environment variables, mostly used for acme dns provider settings
 
 # Container related vars
-traefik_docker_network: bridge  # docker network name for traefik proxy
+traefik_docker_network: traefik  # docker network name for traefik proxy
 
 # Dashboard
 traefik_dashboard_enable: true  # enable/disable dashboard
@@ -55,13 +57,16 @@ traefik_provider_docker: false  # enable/disable docker provider
 traefik_provider_docker_exposebydefault: false  # enable/disable expose by default
 traefik_provider_docker_defaultrule: ""  # default rule for docker provider
 traefik_provider_docker_endpoint: ""  # default docker endpoint unix:///var/run/docker.sock
-
+traefik_providers: {} # providers config https://doc.traefik.io/traefik/providers/overview/
 # Pilot
 traefik_pilot_token: ""  # token for traefik pilot integration
 
 # Metrics
 traefik_metrics: {}  # Datadog, InfluxDB, StatsD metrics config
 traefik_metrics_prometheus: false  # enable/disable internal Prometheus metrics
+
+# Tracing
+traefik_tracing: {}  # https://doc.traefik.io/traefik/observability/tracing/overview/
 
 # Custom dynamic config
 traefik_custom_config: {}  # Refer to traefik docs https://doc.traefik.io/traefik/reference/dynamic-configuration/file
@@ -112,6 +117,14 @@ traefik_acme_storage_file: '{{ traefik_home }}/acme.json'
     traefik_acme_dns_provider: duckdns
     traefik_env:
       DUCKDNS_TOKEN: "duckdns_token_value"
+  roles:
+    - bonddim.linux.traefik
+
+# Run playbook with --tags traefik-uninstall
+- name: uninstall traefik completely
+  hosts: all
+  vars:
+    traefik_uninstall_purge: true
   roles:
     - bonddim.linux.traefik
 ```

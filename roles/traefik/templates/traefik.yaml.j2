@@ -70,6 +70,10 @@ providers:
     directory: {{ traefik_configdir_dynamic }}
     watch: true
 
+{% for provider, config in traefik_providers.items() %}
+  {{ provider }}: {{ config }}
+{% endfor %}
+
 # API and dashboard configuration
 api:
   insecure: false
@@ -86,12 +90,12 @@ pilot:
   token: {{ traefik_pilot_token }}
   dashboard: true
 
-# Metrics configuration
 {% if traefik_metrics or traefik_metrics_prometheus %}
+# Metrics configuration
 metrics:
-  {% if traefik_metrics %}
-  {{ traefik_metrics | to_yaml }}
-  {% endif %}
+  {% for item, config in traefik_metrics.items() %}
+  {{ item }}: {{ config }}
+  {% endfor %}
   {% if traefik_metrics_prometheus %}
   prometheus:
     addEntryPointsLabels: true
@@ -99,4 +103,12 @@ metrics:
     addServicesLabels: true
     manualRouting: true
   {% endif %}
+{% endif %}
+
+{% if traefik_tracing %}
+# Tracing configuration
+tracing:
+{% for item, config in traefik_tracing.items() %}
+  {{ item }}: {{ config }}
+{% endfor %}
 {% endif %}
