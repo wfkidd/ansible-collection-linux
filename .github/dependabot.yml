@@ -11,5 +11,12 @@ updates:
       interval: "weekly"
     labels:
       - "dependencies"
-      - "github_actions"
+      - "skip-changelog"
+
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
       - "skip-changelog"
