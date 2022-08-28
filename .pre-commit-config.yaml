@@ -17,7 +17,7 @@ repos:
         args: [--markdown-linebreak-ext=md]
 
   - repo: https://github.com/ansible-community/ansible-lint.git
-    rev: v6.4.0
+    rev: v6.5.0
     hooks:
       - id: ansible-lint
-        args: ['--profile', 'shared', '--warn-list', 'unnamed-task,schema[meta]']
+        args: ['--profile', 'shared', '--warn-list', 'experimental,name[missing],schema[meta],jinja[spacing]']
