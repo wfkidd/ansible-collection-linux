@@ -4,7 +4,6 @@ Install [AdGuard Home](https://adguard.com/en/adguard-home/overview.html)
 
 ## Requirements
 * Docker daemon and Docker SDK for Python is required on target host if **docker** install method selected (see Role variables section below)
-* Snapd daemon is required on target host if **snap** install method selected (see Role variables section below)
 
 ## Role Variables
 Variables with default values from [defaults/main.yml](https://github.com/bonddim/ansible-collection-linux/blob/main/roles/adguardhome/defaults/main.yml)
@@ -12,7 +11,7 @@ Variables with default values from [defaults/main.yml](https://github.com/bonddi
 # Common vars
 adguardhome_home: /opt/AdGuardHome
 adguardhome_version: latest  # version to install
-adguardhome_install_method: docker  # possible values binary, docker, snap
+adguardhome_install_method: docker  # possible values binary, docker
 adguardhome_listen_all: true  # prepare system to allow AdGuard Home listen on all interfaces
 
 # Binary relates vars
@@ -33,9 +32,6 @@ adguardhome_docker_ports:  # list of port mappings
   - 53:53/tcp
   - 53:53/udp
   - 3000:3000/tcp
-
-# Snap related vars
-adguardhome_snap_channel: latest/stable  # channel to install from snap
 ```
 
 ## Example Playbook
@@ -50,13 +46,5 @@ adguardhome_snap_channel: latest/stable  # channel to install from snap
   vars:
     adguardhome_install_method: docker
   roles:
-    - bonddim.linux.adguard
-
-- name: Install AdGuard Home snap
-  hosts: all
-  vars:
-    adguardhome_install_method: snap
-  roles:
-    - bonddim.linux.snapd
     - bonddim.linux.adguard
 ```

@@ -10,13 +10,6 @@
     - name: Populate service facts
       ansible.builtin.service_facts:
 
-    - name: Install snapd
-      ansible.builtin.include_role:
-        name: bonddim.linux.snapd
-      when:
-        - adguardhome_install_method == 'snap'
-        - 'not "snapd.service" in ansible_facts.services'
-
     - when: adguardhome_install_method == 'docker'
       block:
         - name: Install Docker daemon

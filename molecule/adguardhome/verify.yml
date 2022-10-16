@@ -12,8 +12,7 @@
         dest: >-
           {{
             '/opt/AdGuardHome/AdGuardHome.yaml' if adguardhome_install_method == 'binary' else
-            '/opt/AdGuardHome/conf/AdGuardHome.yaml' if adguardhome_install_method == 'docker' else
-            '/var/snap/adguard-home/current/AdGuardHome.yaml'
+            '/opt/AdGuardHome/conf/AdGuardHome.yaml'
           }}
         src: AdGuardHome.yaml
         mode: 0644
@@ -21,15 +20,11 @@
 
     - name: Restart AdGuard Home service
       ansible.builtin.service:
-        name: >-
-          {{
-            'AdGuardHome.service' if adguardhome_install_method == 'binary' else
-            'snap.adguard-home.adguard-home.service'
-          }}
+        name: 'AdGuardHome.service'
         state: restarted
       when:
         - _adguardhome_config.changed
-        - adguardhome_install_method != 'docker'
+        - adguardhome_install_method == 'binary'
 
     - name: Restart AdGuard Home container
       community.docker.docker_container:

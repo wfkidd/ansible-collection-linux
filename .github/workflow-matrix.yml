@@ -17,8 +17,6 @@ adguardhome:
     include:
       - distro: rockylinux/8/cloud
         install_method: docker
-      - distro: ubuntu/20.04/cloud
-        install_method: snap
 
 epel:
   matrix:
@@ -26,13 +24,6 @@ epel:
     exclude:
       - distro: debian/11/cloud
       - distro: ubuntu/20.04/cloud
-
-lxd:
-  matrix:
-    <<: *default
-    exclude:
-      - distro: debian/11/cloud
-      - distro: fedora/35/cloud
 
 traefik:
   matrix:
